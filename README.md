@@ -63,6 +63,16 @@ Donde ahora los bits a modificar seran 3, 5, 4 dentro de la matriz
 
 ### Ejemplo
 
+Un ejemplo seria que se quiere comprobar si "gato" esta dentro del filtro, se hace uso de las hashes dando como resultado: 
+
+```text
+h1(“cat”) % 10 = 1
+h2(“cat”) % 10 = 3
+h3(“cat”) % 10 = 7
+```
+Donde los indices de la matriz ya estan establecidos en 1 pero nunca se llego a agregar propiamente el valor de "gato", siendo este un caso de faso positivo, ya que los indices 1 y 7 se llegaron a establecer cuando se agrego "geeks" y el bit 3 cuando se establecio "nerd". 
+
+<img width="433" height="191" alt="image" src="https://github.com/user-attachments/assets/bd92271a-ad92-4af5-b538-6079acf8d400" />
 
 
 ---
