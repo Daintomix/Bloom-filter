@@ -187,9 +187,10 @@ if __name__ == "__main__":
 # Conclusiones
 
 ### Miranda Valdez Alan Hjaziel: 
-- 
+- Con Bloom-filter es una manera para poder tener un resultado de manera determinista y de probabilidad, donde se puede hacer uso de este para optimizar el uso de memoria, ya que solo almacena un numero indicado de bits en una matriz u arreglo, donde cada uno de los elementos tienen un tiempo constante *O(k)* donde su comportamiento dentro de la prueba, validan sobre la certeza de como no pueden existir falsos negativos y los propios falsos positivos que llegan a existir por la naturaleza del algoritmo, donde su mayor utilidad es la filtracion rapida en memoria para poder descartar operaciones costosas de rendimiento y tiempo.
 
 
+### 
 
 
 
