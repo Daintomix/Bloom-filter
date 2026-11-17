@@ -62,7 +62,7 @@ Ahora con estas salidas los bits entran en los indices 3,5,9 dentro de la matriz
                     ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
                 Bit │ 0 │ 0 │ 0 │ 1 │ 0 │ 1 │ 0 │ 0 │ 0 │ 1 │
                     └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-                Idx   0   1   2   3   4   5   6   7   8  9
+                Idx   1   2   3   4   5   6   7   8   9   10
 ```
             
 Ahora de nuevo se queire introducir un dato, en este caso "ave", donde igualmente se calculara mediante hashes
@@ -81,7 +81,7 @@ Donde ahora los bits a modificar seran 3, 7,9 dentro de la matriz
                     ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
                 Bit │ 0 │ 0 │ 0 │ 1 │ 0 │ 1 │ 0 │ 1 │ 0 │ 1 │
                     └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-                Idx   0   1   2   3   4   5   6   7   8  9
+                Idx   1   2   3   4   5   6   7   8   9   10
 
 
 ```
@@ -116,7 +116,7 @@ Donde los indices de la matriz ya estan establecidos en 1 pero nunca se llego a 
                     ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
                 Bit │ 0 │ 0 │ 0 │ 1 │ 0 │ 1 │ 0 │ 1 │ 0 │ 1 │
                     └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-                Idx   0   1   2   3   4   5   6   7   8  9
+                Idx   1   2   3   4   5   6   7   8   9   10
 ```
 ---
 
