@@ -3,7 +3,7 @@
 ## Integrantes:
 
 - [323067360] - Miranda Valdez Alan Hjaziel
-- [] - 
+- [426058995] - Cristobal Velazco Gustavi Dainzu
 - [] -
 
 ---
