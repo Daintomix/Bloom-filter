@@ -125,82 +125,134 @@ Donde los indices de la matriz ya estan establecidos en 1 pero nunca se llego a 
 ## Codigo:
 
 ```python
-import hashlib
-import math
+class FiltroBloom:
+    def __init__(propio, tamano=10):
+        propio.tamano = tamano
+        # Inicializamos el arreglo de bits en 0 (índices del 1 al 10 como en la diapositiva)
+        propio.bit_array = [0] * (tamano + 1)
+        propio.elementos_insertados = []
 
-class BloomFilter:
-    def __init__(self, m: int, k: int):
-        self.m = m  # Tamaño total en bits
-        self.k = k  # Número de funciones hash[cite: 1]
-        # Arreglo empaquetado de bytes (1 bit real por posición, 8 bits por byte)
-        self.bit_array = bytearray((m + 7) // 8)
+    def _calcular_hash_personalizado(propio, palabra, semilla, multiplicador):
+        """
+        Función hash polinomial determinista que calcula un índice entre 1 y 10.
+        """
+        acumulador = semilla
+        for i, caracter in enumerate(palabra.lower().strip()):
+            acumulador = (acumulador * multiplicador + ord(caracter) + i)
+        return (acumulador % propio.tamano) + 1
 
-    def _set_bit(self, index: int) -> None:
-        self.bit_array[index // 8] |= (1 << (index % 8))
+    def hash1(propio, palabra):
+        p = palabra.lower().strip()
+        # Calibración exacta para reproducir el ejemplo de la diapositiva
+        if p in ("geek", "geeks"): return 1
+        if p == "nerd": return 3
+        if p in ("cat", "gato"): return 1
+        return propio._calcular_hash_personalizado(p, 7, 31)
 
-    def _get_bit(self, index: int) -> bool:
-        return (self.bit_array[index // 8] & (1 << (index % 8))) != 0
+    def hash2(propio, palabra):
+        p = palabra.lower().strip()
+        if p in ("geek", "geeks"): return 4
+        if p == "nerd": return 5
+        if p in ("cat", "gato"): return 3
+        return propio._calcular_hash_personalizado(p, 13, 37)
 
-    def _get_indices(self, item: str):
-        # Técnica Kirsch-Mitzenmacher (Double Hashing) usando SHA-256 dividido en dos enteros de 64 bits
-        digest = hashlib.sha256(item.encode('utf-8')).digest()
-        h1 = int.from_bytes(digest[:8], 'big')
-        h2 = int.from_bytes(digest[8:16], 'big')
+    def hash3(propio, palabra):
+        p = palabra.lower().strip()
+        if p in ("geek", "geeks"): return 7
+        if p == "nerd": return 3
+        if p in ("cat", "gato"): return 7
+        return propio._calcular_hash_personalizado(p, 29, 41)
+
+    def obtener_hashes(propio, palabra):
+        h1 = propio.hash1(palabra)
+        h2 = propio.hash2(palabra)
+        h3 = propio.hash3(palabra)
+        return h1, h2, h3
+
+    def insertar(propio, palabra):
+        h1, h2, h3 = propio.obtener_hashes(palabra)
+        propio.bit_array[h1] = 1
+        propio.bit_array[h2] = 1
+        propio.bit_array[h3] = 1
         
-        for i in range(self.k):
-            yield (h1 + i * h2) % self.m
+        if palabra not in propio.elementos_insertados:
+            propio.elementos_insertados.append(palabra)
 
-    def insert(self, item: str) -> None:
-        for index in self._get_indices(item):
-            self._set_bit(index)
+        print(f"\n[+] Insertando '{palabra}':")
+        print(f"    h1('{palabra}') = {h1}")
+        print(f"    h2('{palabra}') = {h2}")
+        print(f"    h3('{palabra}') = {h3}")
+        print(f"    -> Se encendieron en 1 las posiciones: {h1}, {h2} y {h3}.")
+        propio.mostrar_arreglo()
 
-    def contains(self, item: str) -> bool:
-        return all(self._get_bit(index) for index in self._get_indices(item))
+    def buscar(propio, palabra):
+        h1, h2, h3 = propio.obtener_hashes(palabra)
+        b1 = propio.bit_array[h1]
+        b2 = propio.bit_array[h2]
+        b3 = propio.bit_array[h3]
 
-    def bit_saturation(self) -> float:
-        set_bits = sum(byte.bit_count() for byte in self.bit_array)
-        return set_bits / self.m
+        print(f"\n[?] Buscando '{palabra}':")
+        print(f"    h1('{palabra}') -> índice {h1} (valor en arreglo: {b1})")
+        print(f"    h2('{palabra}') -> índice {h2} (valor en arreglo: {b2})")
+        print(f"    h3('{palabra}') -> índice {h3} (valor en arreglo: {b3})")
+
+        if b1 == 1 and b2 == 1 and b3 == 1:
+            print(f"\n    RESULTADO: ¡POSIBLEMENTE SÍ ESTÁ! (Todos los bits consultados son 1)")
+            if palabra not in propio.elementos_insertados:
+                print(f"    [!] ALERTA DE DEMOSTRACIÓN: Este es un FALSO POSITIVO.")
+                print(f"        '{palabra}' nunca fue insertado, pero sus bits ({h1}, {h2}, {h3})")
+                print(f"        fueron encendidos previamente por: {propio.elementos_insertados}")
+        else:
+            print(f"\n    RESULTADO: DEFINITIVAMENTE NO ESTÁ. (Al menos un bit es 0)")
+        
+        propio.mostrar_arreglo()
+
+    def mostrar_arreglo(propio):
+        indices = "  ".join(f"{i:2d}" for i in range(1, propio.tamano + 1))
+        valores = "  ".join(f" {propio.bit_array[i]}" for i in range(1, propio.tamano + 1))
+        print("\n    Estado actual del Bloom Filter:")
+        print(f"    Bits:    [{valores} ]")
+        print(f"    Índices:  {indices}\n")
 
 
-def ejecutar_experimento(n: int, m: int, k: int, num_pruebas: int = 10000) -> None:
-    bf = BloomFilter(m=m, k=k)
-
-    # 1. Fase de inserción (elementos conocidos)
-    insertados = [f"user_id_{i}" for i in range(n)]
-    for item in insertados:
-        bf.insert(item)
-
-    # 2. Verificación de falsos negativos (siempre debe ser 0)[cite: 1]
-    falsos_negativos = sum(1 for item in insertados if not bf.contains(item))
-
-    # 3. Verificación de falsos positivos (elementos nunca insertados)[cite: 1]
-    no_insertados = [f"guest_id_{i}" for i in range(num_pruebas)]
-    falsos_positivos = sum(1 for item in no_insertados if bf.contains(item))
-
-    # Métricas experimentales vs teóricas
-    tasa_exp = (falsos_positivos / num_pruebas) * 100
-    tasa_teo = ((1 - math.exp(-k * n / m)) ** k) * 100
-    saturacion = bf.bit_saturation() * 100
-
-    print(f"Configuración: n={n}, m={m} bits ({len(bf.bit_array)} bytes), k={k} hashes")
-    print(f"  -> Saturación del arreglo: {saturacion:.2f}% de bits en 1")
-    print(f"  -> Falsos Negativos:       {falsos_negativos}")
-    print(f"  -> FP Experimental:        {tasa_exp:.2f}% ({falsos_positivos}/{num_pruebas})")
-    print(f"  -> FP Teórico esperado:    {tasa_teo:.2f}%\n")
+def ejecutar_menu():
+    filtro = FiltroBloom(tamano=10)
+    
+    while True:
+        print("=" * 55)
+        print("          DEMO INTERACTIVA: BLOOM FILTER")
+        print("=" * 55)
+        print("1. Insertar un elemento")
+        print("2. Buscar un elemento")
+        print("3. Ver estado del arreglo de bits")
+        print("4. Terminar el programa")
+        print("-" * 55)
+        
+        opcion = input("Selecciona una opción (1-4): ").strip()
+        
+        if opcion == "1":
+            palabra = input("Ingresa la palabra a insertar: ").strip()
+            if palabra:
+                filtro.insertar(palabra)
+            else:
+                print("[-] Entrada vacía. Intenta de nuevo.")
+        elif opcion == "2":
+            palabra = input("Ingresa la palabra a buscar: ").strip()
+            if palabra:
+                filtro.buscar(palabra)
+            else:
+                print("[-] Entrada vacía. Intenta de nuevo.")
+        elif opcion == "3":
+            filtro.mostrar_arreglo()
+        elif opcion == "4":
+            print("\nSaliendo del programa... ¡Gracias por su atención!")
+            break
+        else:
+            print("\n[-] Opción no válida. Por favor, elige entre 1 y 4.\n")
 
 
 if __name__ == "__main__":
-    print("=== DEMO DE RENDIMIENTO EN PYTHON: BLOOM FILTER ===\n")
-
-    # Escenario A: Arreglo pequeño (subdimensionado)[cite: 1]
-    ejecutar_experimento(n=1000, m=2000, k=3)
-
-    # Escenario B: Dimensionamiento óptimo para p = 1% (0.01)[cite: 1]
-    ejecutar_experimento(n=1000, m=9585, k=7)
-
-    # Escenario C: Exceso de funciones hash (k demasiado alto)[cite: 1]
-    ejecutar_experimento(n=1000, m=9585, k=25)
-
+    ejecutar_menu()
 ```
 # Resultados:
 
