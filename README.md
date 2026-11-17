@@ -104,11 +104,11 @@ Donde los indices de la matriz ya estan establecidos en 1 pero nunca se llego a 
 
 <img width="433" height="191" alt="image" src="https://github.com/user-attachments/assets/bd92271a-ad92-4af5-b538-6079acf8d400" />
 ```
-                      ┌──────── geeks ────────┐
-                      │           │           │
-                      ▼           ▼           ▼
+                      ┌──────── cat ──────────┐
+                      │       │               │
+                      ▼       ▼               ▼
                     ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-                Bit │ 1 │ 0 │ 0 │ 1 │ 0 │ 0 │ 1 │ 0 │ 0 │ 0 │
+                Bit │ 1 │ 0 │ 1 │ 1 │ 1 │ 0 │ 1 │ 0 │ 0 │ 0 │
                     └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
                 Idx   1   2   3   4   5   6   7   8   9  10
 ```
