@@ -250,12 +250,18 @@ Configuraci�n: n=1000, m=9585 bits (1199 bytes), k=25 hashes
 ### Miranda Valdez Alan Hjaziel: 
 - Con Bloom-filter es una manera para poder tener un resultado de manera determinista y de probabilidad, donde se puede hacer uso de este para optimizar el uso de memoria, ya que solo almacena un numero indicado de bits en una matriz u arreglo, donde cada uno de los elementos tienen un tiempo constante *O(k)* donde su comportamiento dentro de la prueba, validan sobre la certeza de como no pueden existir falsos negativos y los propios falsos positivos que llegan a existir por la naturaleza del algoritmo, donde su mayor utilidad es la filtracion rapida en memoria para poder descartar operaciones costosas de rendimiento y tiempo.
 
-
-### 
 ---
 
 ### Cristobal Velazco Gustavo Dainzu
 - Su principal ventaja es la reducción del consumo de memoria y del tiempo de búsqueda, permitiendo descartar rápidamente elementos inexistentes y evitar operaciones costosas. Sin embargo, su rendimiento depende de una correcta configuración del arreglo de bits y las funciones hash, ya que un mal dimensionamiento aumenta los falsos positivos. Por ello, resulta conveniente cuando se manejan grandes volúmenes de información y se toleran pequeños márgenes de error, pero no cuando se necesita exactitud absoluta, recuperar los datos originales o realizar eliminaciones frecuentes.
+
+### Hernández González Jocelyn
+- Un **filtro de Bloom** es una estructura de datos probabilística ultraeficiente que responde rápidamente si un elemento pertenece a un conjunto usando un espacio mínimo de memoria.
+
+* **Mecánica:** Utiliza un arreglo de bits (inicializados en `0`) y $k$ funciones hash. Al insertar, enciende los bits correspondientes; al consultar, si algún bit es `0` el elemento **definitivamente no está**, pero si todos son `1`, **probablemente está**.
+* **Ventajas y límites:** Garantiza **cero falsos negativos**, pero acepta **falsos positivos** debido a colisiones o saturación del arreglo, y no permite eliminar elementos.
+* **Optimización:** La tasa de error se controla ajustando matemáticamente el tamaño del arreglo ( $m$ ) y el número de funciones hash ( $k$ ).
+* **Aplicaciones:** Es fundamental en bases de datos, cachés y redes blockchain para evitar búsquedas costosas en disco o red.
   
 ---
 # Referencias:
