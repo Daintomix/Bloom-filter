@@ -203,7 +203,28 @@ if __name__ == "__main__":
 
 ```
 # Resultados:
-<img width="590" height="375" alt="image" src="https://github.com/user-attachments/assets/c59904b5-9d20-4235-b167-5392a6abbd26" />
+
+```text
+=== DEMO DE RENDIMIENTO EN PYTHON: BLOOM FILTER ===
+
+Configuraci�n: n=1000, m=2000 bits (250 bytes), k=3 hashes
+  -> Saturaci�n del arreglo: 77.15% de bits en 1
+  -> Falsos Negativos:       0
+  -> FP Experimental:        46.41% (4641/10000)
+  -> FP Te�rico esperado:    46.89%
+
+Configuraci�n: n=1000, m=9585 bits (1199 bytes), k=7 hashes
+  -> Saturaci�n del arreglo: 51.78% de bits en 1
+  -> Falsos Negativos:       0
+  -> FP Experimental:        1.02% (102/10000)
+  -> FP Te�rico esperado:    1.00%
+
+Configuraci�n: n=1000, m=9585 bits (1199 bytes), k=25 hashes
+  -> Saturaci�n del arreglo: 92.69% de bits en 1
+  -> Falsos Negativos:       0
+  -> FP Experimental:        15.33% (1533/10000)
+  -> FP Te�rico esperado:    14.76%
+```
 
 # Analisis de ressultados
 - 
