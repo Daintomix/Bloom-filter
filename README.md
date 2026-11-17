@@ -224,7 +224,13 @@ if __name__ == "__main__":
 
 
 ### 
+---
 
+### Cristobal Velazco Gustavo Dainzu
+
+El Filtro de Bloom demuestra cómo las estructuras de datos probabilísticas resuelven problemas de búsqueda a gran escala sacrificando una fracción controlada de exactitud a cambio de un ahorro drástico de memoria y latencia. Al operar únicamente mediante un arreglo de bits y funciones hash —sin almacenar las claves reales—, esta estructura garantiza cero falsos negativos y tiempos de consulta constantes $O(k)$. No obstante, como se comprobó en las pruebas experimentales, su efectividad depende directamente de mantener un equilibrio adecuado entre la cantidad de elementos ($n$), el tamaño del arreglo ($m$) y el número de funciones hash ($k$), ya que un arreglo subdimensionado o un exceso de hashes satura rápidamente los bits y eleva la tasa de falsos positivos.
+
+Por estas características, conviene utilizar un Bloom Filter cuando se manejan volúmenes masivos de datos que no caben en memoria RAM, cuando las consultas a disco o red son costosas y se necesita una primera barrera rápida para descartar registros inexistentes, o cuando el sistema tolera falsos positivos porque cuenta con una segunda capa para verificar el dato real y sus operaciones son principalmente de inserción. Por el contrario, no conviene emplearlo si se requiere eliminar elementos con frecuencia —escenario donde es preferible usar variantes como el *Counting Bloom Filter* o el *Cuckoo Filter*—, si el sistema exige exactitud absoluta sin margen de error, si es necesario recuperar el dato original almacenado o si el conjunto de datos es lo suficientemente pequeño como para caber sin problemas en una tabla hash tradicional. En definitiva, correctamente dimensionado, el Bloom Filter es una pieza fundamental en la ingeniería de software moderna para proteger bases de datos, acelerar sistemas de caché y filtrar amenazas en tiempo real con un costo computacional mínimo.
 
 
 
