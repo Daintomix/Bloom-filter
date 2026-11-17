@@ -44,44 +44,44 @@ Se necesitan k funciones de hash para que se pueda calcular los hashes de una en
 
 ## Ejemplo
 
-Se quiere introducir la palabra "geeks" donde se hace uso de las funciones hash con un array de longitud 10.
+Se quiere introducir la palabra "sol" donde se hace uso de las funciones hash con un array de longitud 10.
 Primero se debe calcular los hashes:
 
 ```text
-h1(“geeks”) % 10 = 1
-h2(“geeks”) % 10 = 4
-h3(“geeks”) % 10 = 7
+h1(“sol”) % 10 = 3
+h2(“sol”) % 10 = 5
+h3(“sol”) % 10 = 9
 ```
 
-Ahora con estas salidas los bits entran en los indices 1, 4, 7 dentro de la matriz y se cambian a 
+Ahora con estas salidas los bits entran en los indices 3,5,9 dentro de la matriz y se cambian a 
 
 ```
-                      ┌──────── geeks ────────┐
-                      │           │           │
-                      ▼           ▼           ▼
+                       sol
+                                  │        │              │
+                                   ▼       ▼               ▼
                     ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-                Bit │ 1 │ 0 │ 0 │ 1 │ 0 │ 0 │ 1 │ 0 │ 0 │ 0 │
+                Bit │ 0 │ 0 │ 0 │ 1 │ 0 │ 1 │ 0 │ 0 │ 0 │ 1 │
                     └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-                Idx   1   2   3   4   5   6   7   8   9  10
+                Idx   0   1   2   3   4   5   6   7   8  9
 ```
             
-Ahora de nuevo se queire introducir un dato, en este caso "nerd", donde igualmente se calculara mediante hashes
+Ahora de nuevo se queire introducir un dato, en este caso "ave", donde igualmente se calculara mediante hashes
 
 ```text
-h1(“nerd”) % 10 = 3
-h2(“nerd”) % 10 = 5
-h3(“nerd”) % 10 = 4
+h1(“ave”) % 10 = 3
+h2(“ave”) % 10 = 7
+h3(“ave”) % 10 = 9
 ```
 
-Donde ahora los bits a modificar seran 3, 5, 4 dentro de la matriz
+Donde ahora los bits a modificar seran 3, 7,9 dentro de la matriz
 ```
-                              ┌ nerd ─┐
-                              │   │   │
-                              ▼   ▼   ▼
+                                    ave
+                                  │               │       │
+                                   ▼              ▼       ▼
                     ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-                Bit │ 1 │ 0 │ 1 │ 1 │ 1 │ 0 │ 1 │ 0 │ 0 │ 0 │
+                Bit │ 0 │ 0 │ 0 │ 1 │ 0 │ 1 │ 0 │ 1 │ 0 │ 1 │
                     └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-                Idx   1   2   3   4   5   6   7   8   9  10
+                Idx   0   1   2   3   4   5   6   7   8  9
 
 
 ```
@@ -100,23 +100,23 @@ Donde ahora los bits a modificar seran 3, 5, 4 dentro de la matriz
 
 ### Ejemplo
 
-Un ejemplo seria que se quiere comprobar si "gato" esta dentro del filtro, se hace uso de las hashes dando como resultado: 
+Un ejemplo seria que se quiere comprobar si "rana" esta dentro del filtro, se hace uso de las hashes dando como resultado: 
 
 ```text
-h1(“cat”) % 10 = 1
-h2(“cat”) % 10 = 3
-h3(“cat”) % 10 = 7
+h1(“rana”) % 10 = 1
+h2(“rana”) % 10 = 3
+h3(“rana”) % 10 = 7
 ```
-Donde los indices de la matriz ya estan establecidos en 1 pero nunca se llego a agregar propiamente el valor de "gato", siendo este un caso de faso positivo, ya que los indices 1 y 7 se llegaron a establecer cuando se agrego "geeks" y el bit 3 cuando se establecio "nerd". 
+Donde los indices de la matriz ya estan establecidos en 1 pero nunca se llego a agregar propiamente el valor de "rana", siendo este un caso de faso positivo, ya que el indice 5 se llegaron a establecer cuando se agregó "sol" y los bits 7 y 9 cuando se establecio "ave". 
 
 ```
-                      ┌──────── cat ──────────┐
-                      │       │               │
-                      ▼       ▼               ▼
+                                    ranaq
+                                          │       │       │
+                                          ▼       ▼       ▼
                     ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-                Bit │ 1 │ 0 │ 1 │ 1 │ 1 │ 0 │ 1 │ 0 │ 0 │ 0 │
+                Bit │ 0 │ 0 │ 0 │ 1 │ 0 │ 1 │ 0 │ 1 │ 0 │ 1 │
                     └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-                Idx   1   2   3   4   5   6   7   8   9  10
+                Idx   0   1   2   3   4   5   6   7   8  9
 ```
 ---
 
@@ -126,70 +126,47 @@ Donde los indices de la matriz ya estan establecidos en 1 pero nunca se llego a 
 
 ```python
 class FiltroBloom:
-    def __init__(propio, tamano=10):
-        propio.tamano = tamano
-        # Inicializamos el arreglo de bits en 0 (índices del 1 al 10 como en la diapositiva)
-        propio.bit_array = [0] * (tamano + 1)
-        propio.elementos_insertados = []
+    def __init__(self, tamano=10):
+        self.tamano = tamano
+        self.bit_array = [0] * (tamano + 1)
+        self.elementos_insertados = []
 
-    def _calcular_hash_personalizado(propio, palabra, semilla, multiplicador):
+    def _obtener_hash(self, palabra, semilla):
         """
-        Función hash polinomial determinista que calcula un índice entre 1 y 10.
+        Función hash determinista basada en la suma de los valores ASCII de las letras.
+        Al ser matemática y predecible, permite demostrar colisiones exactas.
         """
-        acumulador = semilla
-        for i, caracter in enumerate(palabra.lower().strip()):
-            acumulador = (acumulador * multiplicador + ord(caracter) + i)
-        return (acumulador % propio.tamano) + 1
+        suma_ascii = sum(ord(c) for c in palabra.lower().strip())
+        return ((suma_ascii * semilla) % self.tamano) + 1
 
-    def hash1(propio, palabra):
+    def obtener_hashes(self, palabra):
         p = palabra.lower().strip()
-        # Calibración exacta para reproducir el ejemplo de la diapositiva
-        if p in ("geek", "geeks"): return 1
-        if p == "nerd": return 3
-        if p in ("cat", "gato"): return 1
-        return propio._calcular_hash_personalizado(p, 7, 31)
-
-    def hash2(propio, palabra):
-        p = palabra.lower().strip()
-        if p in ("geek", "geeks"): return 4
-        if p == "nerd": return 5
-        if p in ("cat", "gato"): return 3
-        return propio._calcular_hash_personalizado(p, 13, 37)
-
-    def hash3(propio, palabra):
-        p = palabra.lower().strip()
-        if p in ("geek", "geeks"): return 7
-        if p == "nerd": return 3
-        if p in ("cat", "gato"): return 7
-        return propio._calcular_hash_personalizado(p, 29, 41)
-
-    def obtener_hashes(propio, palabra):
-        h1 = propio.hash1(palabra)
-        h2 = propio.hash2(palabra)
-        h3 = propio.hash3(palabra)
+        h1 = self._obtener_hash(p, semilla=1)
+        h2 = self._obtener_hash(p, semilla=2)
+        h3 = self._obtener_hash(p, semilla=3)
         return h1, h2, h3
 
-    def insertar(propio, palabra):
-        h1, h2, h3 = propio.obtener_hashes(palabra)
-        propio.bit_array[h1] = 1
-        propio.bit_array[h2] = 1
-        propio.bit_array[h3] = 1
+    def insertar(self, palabra):
+        h1, h2, h3 = self.obtener_hashes(palabra)
+        self.bit_array[h1] = 1
+        self.bit_array[h2] = 1
+        self.bit_array[h3] = 1
         
-        if palabra not in propio.elementos_insertados:
-            propio.elementos_insertados.append(palabra)
+        if palabra not in self.elementos_insertados:
+            self.elementos_insertados.append(palabra)
 
         print(f"\n[+] Insertando '{palabra}':")
         print(f"    h1('{palabra}') = {h1}")
         print(f"    h2('{palabra}') = {h2}")
         print(f"    h3('{palabra}') = {h3}")
         print(f"    -> Se encendieron en 1 las posiciones: {h1}, {h2} y {h3}.")
-        propio.mostrar_arreglo()
+        self.mostrar_arreglo()
 
-    def buscar(propio, palabra):
-        h1, h2, h3 = propio.obtener_hashes(palabra)
-        b1 = propio.bit_array[h1]
-        b2 = propio.bit_array[h2]
-        b3 = propio.bit_array[h3]
+    def buscar(self, palabra):
+        h1, h2, h3 = self.obtener_hashes(palabra)
+        b1 = self.bit_array[h1]
+        b2 = self.bit_array[h2]
+        b3 = self.bit_array[h3]
 
         print(f"\n[?] Buscando '{palabra}':")
         print(f"    h1('{palabra}') -> índice {h1} (valor en arreglo: {b1})")
@@ -197,19 +174,18 @@ class FiltroBloom:
         print(f"    h3('{palabra}') -> índice {h3} (valor en arreglo: {b3})")
 
         if b1 == 1 and b2 == 1 and b3 == 1:
-            print(f"\n    RESULTADO: ¡POSIBLEMENTE SÍ ESTÁ! (Todos los bits consultados son 1)")
-            if palabra not in propio.elementos_insertados:
-                print(f"    [!] ALERTA DE DEMOSTRACIÓN: Este es un FALSO POSITIVO.")
-                print(f"        '{palabra}' nunca fue insertado, pero sus bits ({h1}, {h2}, {h3})")
-                print(f"        fueron encendidos previamente por: {propio.elementos_insertados}")
+            if palabra not in self.elementos_insertados:
+                print(f"\n    RESULTADO: ¡POSIBLEMENTE SÍ ESTÁ! (FALSO POSITIVO)")
+                print(f"    [!] ALERTA: '{palabra}' NUNCA fue insertada.")
+                print(f"        Sus bits ({h1}, {h2}, {h3}) fueron encendidos por: {self.elementos_insertados}")
+            else:
+                print(f"\n    RESULTADO: ¡POSIBLEMENTE SÍ ESTÁ! (Todos los bits son 1)")
         else:
             print(f"\n    RESULTADO: DEFINITIVAMENTE NO ESTÁ. (Al menos un bit es 0)")
-        
-        propio.mostrar_arreglo()
 
-    def mostrar_arreglo(propio):
-        indices = "  ".join(f"{i:2d}" for i in range(1, propio.tamano + 1))
-        valores = "  ".join(f" {propio.bit_array[i]}" for i in range(1, propio.tamano + 1))
+    def mostrar_arreglo(self):
+        indices = "  ".join(f"{i:2d}" for i in range(1, self.tamano + 1))
+        valores = "  ".join(f" {self.bit_array[i]}" for i in range(1, self.tamano + 1))
         print("\n    Estado actual del Bloom Filter:")
         print(f"    Bits:    [{valores} ]")
         print(f"    Índices:  {indices}\n")
@@ -235,13 +211,14 @@ def ejecutar_menu():
             if palabra:
                 filtro.insertar(palabra)
             else:
-                print("[-] Entrada vacía. Intenta de nuevo.")
+                print("[-] Entrada vacía.")
         elif opcion == "2":
             palabra = input("Ingresa la palabra a buscar: ").strip()
             if palabra:
                 filtro.buscar(palabra)
+                filtro.mostrar_arreglo()
             else:
-                print("[-] Entrada vacía. Intenta de nuevo.")
+                print("[-] Entrada vacía.")
         elif opcion == "3":
             filtro.mostrar_arreglo()
         elif opcion == "4":
