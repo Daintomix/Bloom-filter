@@ -279,9 +279,14 @@ Configuraci�n: n=1000, m=9585 bits (1199 bytes), k=25 hashes
 ```
 
 # Analisis de ressultados
-- 
 
+El experimento demuestra empíricamente cómo el dimensionamiento de la memoria ( $m$ ) y el número de funciones hash ( $k$ ) determinan la precisión y saturación de un filtro de Bloom al almacenar $n=1000$ elementos.   
 
+- **Garantía absoluta contra falsos negativos:** En las tres pruebas, los falsos negativos se mantienen estrictamente en 0. Esto confirma que, sin importar cuán mal dimensionado esté el filtro, nunca omitirá un elemento que sí fue insertado.
+- **Impacto de la falta de memoria (Escenario A):** Asignar solo 2 bits por elemento ( $m=2000$ ) provoca que el arreglo se llene rápidamente hasta un 77.15%. Al haber tan pocos ceros disponibles, casi la mitad de las consultas de elementos inexistentes colisionan por azar, disparando los falsos positivos al 46.41%.
+- **El punto de equilibrio matemático (Escenario B):** Aumentar la memoria a ~9.6 bits por elemento ( $m=9585$ ) y usar el número óptimo de hashes ( $k=7$ ) mantiene la saturación del arreglo prácticamente en el 50% (51.78%). Esta distribución uniforme entre ceros y unos maximiza la entropía de la información y logra cumplir la meta de diseño: una tasa de error real de apenas 1.02%.
+- **La trampa del exceso de hashes (Escenario C):** Manteniendo exactamente la misma memoria óptima (1199 bytes), elevar las funciones hash de $k=7$ a $k=25$ resulta contraproducente. Cada inserción enciende demasiados bits, disparando la saturación al 92.69%. Aunque se requieren 25 coincidencias simultáneas para dar un falso positivo, la altísima densidad de unos multiplica el error más de 15 veces respecto al escenario óptimo (subiendo a 15.33%).
+- **Validación del modelo teórico:** En todos los casos, los resultados experimentales sobre 10,000 pruebas coinciden casi a la décima con las predicciones matemáticas teóricas (46.41% vs. 46.89%, 1.02% vs. 1.00% y 15.33% vs. 14.76%), validando la calidad de distribución de la técnica Double Hashing con SHA-256 utilizada en el código.  
 
 
 
