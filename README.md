@@ -41,15 +41,15 @@ h3(“geeks”) % 10 = 7
 Ahora con estas salidas los bits entran en los indices 1, 4, 7 dentro de la matriz y se cambian a 1
 <img width="460" height="172" alt="image" src="https://github.com/user-attachments/assets/e29de23a-b0bd-451e-80b6-8aa83ba692dc" />
 ```text
-                     ┌─────────────── cat ───────────────┐
-                     │               │                   │
-                     ▼               ▼                   ▼
-    ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-Bit │ 1 │ 0 │ 1 │ 1 │ 1 │ 0 │ 1 │ 0 │ 0 │ 0 │
-    └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
-Idx   1   2   3   4   5   6   7   8   9  10
+                      ┌─────────────── cat ───────────────┐
+                      │               │                   │
+                      ▼               ▼                   ▼
+                    ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+                Bit │ 1 │ 0 │ 1 │ 1 │ 1 │ 0 │ 1 │ 0 │ 0 │ 0 │
+                    └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+                Idx   1   2   3   4   5   6   7   8   9  10
+```
 Ahora de nuevo se queire introducir un dato, en este caso "nerd", donde igualmente se calculara mediante hashes
-
 ```text
 h1(“nerd”) % 10 = 3
 h2(“nerd”) % 10 = 5
