@@ -27,12 +27,12 @@ Mostrar como un arreglo de bits y varias funciones hash responden "¿esta?" con 
 
 # Funcionamiento del filtro Bloom
 - Un filtro Bloom vacio es una matriz que contiene una matriz de m cantidad de bits:
-  <img width="472" height="125" alt="image" src="https://github.com/user-attachments/assets/9d767ed0-a091-4f10-a81f-f41b93bd5e3c" />
+```
                     ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
-                Bit │ 1 │ 0 │ 0 │ 1 │ 0 │ 0 │ 1 │ 0 │ 0 │ 0 │
+                Bit │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │ 0 │
                     └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
                 Idx   1   2   3   4   5   6   7   8   9  10
-
+```
 Se necesitan k funciones de hash para que se pueda calcular los hashes de una entrada. Donde cuando se añade un elemento al filtro se activan en los indices h1(x), h2(x) ... hk(x) donde en los indeces se calcula por la funcion hash.
 
 ## Ejemplo
@@ -103,7 +103,15 @@ h3(“cat”) % 10 = 7
 Donde los indices de la matriz ya estan establecidos en 1 pero nunca se llego a agregar propiamente el valor de "gato", siendo este un caso de faso positivo, ya que los indices 1 y 7 se llegaron a establecer cuando se agrego "geeks" y el bit 3 cuando se establecio "nerd". 
 
 <img width="433" height="191" alt="image" src="https://github.com/user-attachments/assets/bd92271a-ad92-4af5-b538-6079acf8d400" />
-
+```
+                      ┌──────── geeks ────────┐
+                      │           │           │
+                      ▼           ▼           ▼
+                    ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
+                Bit │ 1 │ 0 │ 0 │ 1 │ 0 │ 0 │ 1 │ 0 │ 0 │ 0 │
+                    └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
+                Idx   1   2   3   4   5   6   7   8   9  10
+```
 ---
 
 # Demo: 
