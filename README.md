@@ -25,6 +25,13 @@ Mostrar como un arreglo de bits y varias funciones hash responden "¿esta?" con 
 
 ---
 
+# Contexto: 
+El filtro de Bloom fue inventado en 1970 por el informatico estadounidense Burton Howard Bloom, mientras trabajaba en la empresa Computer Usage Company en Massachusetts. Lo dio a conocer en julio de ese año mediante el articulo titulado "Space/Time Trade-offs in Hash Coding with Allowable Errors" en la revista Communications of the ACM.
+
+Donde Bloom propuso abandonar la exactitud absoluta y aceptar un pequeño margen de error controlado.
+
+---
+
 # Funcionamiento del filtro Bloom
 - Un filtro Bloom vacio es una matriz que contiene una matriz de m cantidad de bits:
 ```
@@ -232,8 +239,15 @@ El Filtro de Bloom demuestra cómo las estructuras de datos probabilísticas res
 
 Por estas características, conviene utilizar un Bloom Filter cuando se manejan volúmenes masivos de datos que no caben en memoria RAM, cuando las consultas a disco o red son costosas y se necesita una primera barrera rápida para descartar registros inexistentes, o cuando el sistema tolera falsos positivos porque cuenta con una segunda capa para verificar el dato real y sus operaciones son principalmente de inserción. Por el contrario, no conviene emplearlo si se requiere eliminar elementos con frecuencia —escenario donde es preferible usar variantes como el *Counting Bloom Filter* o el *Cuckoo Filter*—, si el sistema exige exactitud absoluta sin margen de error, si es necesario recuperar el dato original almacenado o si el conjunto de datos es lo suficientemente pequeño como para caber sin problemas en una tabla hash tradicional. En definitiva, correctamente dimensionado, el Bloom Filter es una pieza fundamental en la ingeniería de software moderna para proteger bases de datos, acelerar sistemas de caché y filtrar amenazas en tiempo real con un costo computacional mínimo.
 
-
-
-
 ---
+# Referencias:
+
+- Bloom, B. H. (1970). Space/time trade-offs in hash coding with allowable errors. Communications of the ACM, 13(7), 422–426. https://doi.org/10.1145/362686.362692
+- Kumar, A. (2025, 23 de julio). Bloom Filters - Introduction and Implementation. GeeksforGeeks. https://www.geeksforgeeks.org/python/bloom-filters-introduction-and-python-implementation/
+- Redis. (s. f.). Bloom filter. Redis Docs. Recuperado el 16 de noviembre de 2026, de https://redis.io/docs/latest/develop/data-types/probabilistic/bloom-filter/
+
+
+
+
+
 
