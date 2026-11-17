@@ -56,9 +56,9 @@ h3(“sol”) % 10 = 9
 Ahora con estas salidas los bits entran en los indices 3,5,9 dentro de la matriz y se cambian a 
 
 ```
-                       sol
+                                          sol
                                   │        │              │
-                                   ▼       ▼               ▼
+                                  ▼        ▼              ▼
                     ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
                 Bit │ 0 │ 0 │ 0 │ 1 │ 0 │ 1 │ 0 │ 0 │ 0 │ 1 │
                     └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
@@ -75,9 +75,9 @@ h3(“ave”) % 10 = 9
 
 Donde ahora los bits a modificar seran 3, 7,9 dentro de la matriz
 ```
-                                    ave
+                                              ave
                                   │               │       │
-                                   ▼              ▼       ▼
+                                  ▼               ▼       ▼
                     ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
                 Bit │ 0 │ 0 │ 0 │ 1 │ 0 │ 1 │ 0 │ 1 │ 0 │ 1 │
                     └───┴───┴───┴───┴───┴───┴───┴───┴───┴───┘
@@ -110,7 +110,7 @@ h3(“rana”) % 10 = 7
 Donde los indices de la matriz ya estan establecidos en 1 pero nunca se llego a agregar propiamente el valor de "rana", siendo este un caso de faso positivo, ya que el indice 5 se llegaron a establecer cuando se agregó "sol" y los bits 7 y 9 cuando se establecio "ave". 
 
 ```
-                                    ranaq
+                                                rana
                                           │       │       │
                                           ▼       ▼       ▼
                     ┌───┬───┬───┬───┬───┬───┬───┬───┬───┬───┐
